@@ -1,0 +1,28 @@
+# data_cleaner.py
+
+import pandas as pd
+
+def clean_csv(file_path, output_path):
+    """
+    Cleans CSV data:
+    - Removes duplicates
+    - Fills missing values with 'N/A'
+    - Strips whitespace from strings
+    """
+    df = pd.read_csv(file_path)
+    
+    # Remove duplicates
+    df = df.drop_duplicates()
+    
+    # Fill missing values
+    df = df.fillna("N/A")
+    
+    # Strip whitespace from string columns
+    for col in df.select_dtypes(include=['object']).columns:
+        df[col] = df[col].str.strip()
+    
+    df.to_csv(output_path, index=False)
+    print(f"Cleaned CSV saved to {output_path}")
+
+# Example usage
+# clean_csv("input.csv", "output_cleaned.csv")
